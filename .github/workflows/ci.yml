@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+        env:
+          # Dummy values for CI — tests don't hit real APIs
+          ANTHROPIC_API_KEY: test_key
+          NEXT_PUBLIC_SUPABASE_URL: https://fake.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: fake_key
+          SUPABASE_SERVICE_ROLE_KEY: fake_service_key
+          RESEND_API_KEY: fake_resend_key
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+
+      - name: Build check
+        run: npm run build
+        env:
+          ANTHROPIC_API_KEY: test_key
+          NEXT_PUBLIC_SUPABASE_URL: https://fake.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: fake_key
+          SUPABASE_SERVICE_ROLE_KEY: fake_service_key
+          RESEND_API_KEY: fake_resend_key
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
