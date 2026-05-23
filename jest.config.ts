@@ -3,7 +3,7 @@ const config: Config = {
   testEnvironment: "jsdom",
   transform: { "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: { jsx: "react" } }] },
   moduleNameMapper: { "^@/(.*)$": "<rootDir>/src/$1" },
-  setupFilesAfterFramework: ["@testing-library/jest-dom"],
-  testPathPattern: ["src/__tests__"],
+  setupFilesAfterEnv: ["@testing-library/jest-dom"],
+  testMatch: ["src/__tests__/**/*.test.ts?(x)"],
 };
 export default config;
